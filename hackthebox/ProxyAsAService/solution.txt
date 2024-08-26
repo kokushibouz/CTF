@@ -1,0 +1,13 @@
+khi đọc source code ở "routes.py" ta thấy đoạn code này cho phép người dung gửi yêu cầu proxy đến bất ky URL nào bằng cách sử dụng tham số url => dẫn đến ta có thể thực hiện SSRF 
+
+khi đọc nội dung ở file Dockerfile ta thấy được biến flag là biến môi trường
+quay trở lại file "routes.py" ta thấy có hàm "/environment" trả về tất cả các biến môi trường => ta cần tìm cách gọi đến hàm này mà hàm /environment chỉ có thể được gọi từ địa chỉ local host
+
+tiến hành khai thác:
+Biến target_url thêm url vào cuối
+Do SITE_NAME không có '/' ở cuối nên ta có thể kiểm soát được url bằng cách
+http://1.1.1.1@2.2.2.2 ==> http://2.2.2.2
+ta cần thêm địa chỉ localhost 127.0.0.1 vào nhưng khi đọc hàm "util.py" ta thấy sẽ bị giới hạn các địa chỉ ip được nhập vào (địa chỉ 127. đã bị chặn)
+để ý thêm ở hàm "run.py" ta thấy được host được chạy với ip "0.0.0.0"
+=> tiến hành khai thác với "?url=@0.0.0.0:1337/debug/environment" => thu được flag
+

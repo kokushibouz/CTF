@@ -1,0 +1,26 @@
+Nhận thấy rằng web cho phép chúng ta nhập và trả về giá trị chúng ta nhập
+=> khai thác lỗ hổng ssti
+=> nhận thấy rằng file neon.rb là file ruby
+=> sử dụng payload "<%= File.open('flag.txt').read %>" để tiến hành khái thác ssti
+=> nhận được thông báo trả về "Malicious Input Detected" check hàm neon.rb ta thấy được 
+"if params[:neon] =~ /^[0-9a-z ]+$/i" chỉ cho phép nhập dữ liệu theo định dạng trên
+=> sử dung burp để bypass
+=> vẫn nhận được thông báo như trên
+phân tích lại hàm "if params[:neon] =~ /^[0-9a-z ]+$/i" ta nhận thấy rằng nó sẽ kiểm tra toàn bộ chuỗi đầu vào xem có lợp lệnh không nhưng chỉ kiểm tra trên 1 dòng đầu tiên.
+=> ta sẽ sử dung payload như sau:
+"a
+<%= File.open('flag.txt').read %>%></h1>"
+ta thấy là hàm "params" check thông tin thì nó sẽ nhận chuỗi là "a\n<%= File.open('flag.txt').read %>"
+=> khi kiểm tra đến "\n" nó sẽ nhận ra đã kết thúc chuỗi cần kiểm tra do đó nó sẽ chỉ kiểm ra "a" và trả về hợp lệ
+
+ta thấy giá trị của neon được nhập vào sẽ gửi đến hàm index.erb
+nếu ta gửi payload
+"
+a
+<%= File.open('flag.txt').read %>"
+ta sẽ thu được:
+
+<h1 class="glow"><%= @neon
+<%= File.open('flag.txt').read %>%></h1>
+=> tiến hành decode url và khai thác
+=> thu được kết quả

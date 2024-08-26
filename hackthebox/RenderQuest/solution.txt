@@ -1,0 +1,10 @@
+Nhận thấy rằng có lỗ ổng ssti
+bình thường ta sẽ thực hiện luôn script trên search
+ở đây ta thấy web sẽ gửi thông tin đến url rồi render lại
+ta sẽ thực hiện payload ssti ở server tự host
+sử dụng webhook.site để deploy server
+tiến hành payload {{.}} => nhận thấy server trả về xác định có tồn tại lỗ hổng
+=> ta thấy trong hàm main.go có hàm "FetchServerInfo" có thể thực hiện lệnh cmd
+=> thực hiện lệnh payload {{.FetchServerInfo "ls -la"}} để hiện thị tất cả các file
+=> thực hiện payload {{.FetchServerInfo "cd ..; "ls -la"}} => ta thấy có file "flagee1da4aaea.txt"
+=> thực hiện payload {{.FetchServerInfo "cat ../flagee1da4aaea.txt "}} => để đọc file và thu được flag 
