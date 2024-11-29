@@ -1,0 +1,3 @@
+xem source code ta thấy được
+ if(cd==124) location.href=String.fromCharCode(cd)+".php"; // do it!
+lệnh này được hiểu là "|.php" và ta nhập vào url => khai thác thành công

